@@ -53,65 +53,76 @@ namespace TBR
 
             // Parse arguments on slashes or dashes
             int paramIndex = 0;
-            while (argStack.Count > 0)
+            string arg = String.Empty;
+
+            try
             {
-                string arg = argStack.Pop();
-                switch (arg.ToUpper())
+                while (argStack.Count > 0)
                 {
-                    case "/ST":
-                        startTime = argStack.Pop();
-                        break;
-                    case "/ET":
-                        endTime = argStack.Pop();
-                        break;
-                    case "/F":
-                        Filename = argStack.Pop();
-                        break;
-                    case "/P":
-                        pages = argStack.Pop();
-                        break;
-                    case "/V":
-                        Verbose = true;
-                        break;
-                    case "-ST":
-                        startTime = argStack.Pop();
-                        break;
-                    case "-ET":
-                        endTime = argStack.Pop();
-                        break;
-                    case "-F":
-                        Filename = argStack.Pop();
-                        break;
-                    case "-P":
-                        pages = argStack.Pop();
-                        break;
-                    case "-V":
-                        Verbose = true;
-                        break;
-                    default:
-                        // Assumes any args that do not have a slash/dash identifier
-                        // are (in order) Url, startDate, and endDate. Any other
-                        // string is unknown and will result in an error.
-                        if (paramIndex == 0)
-                        {
-                            Url = arg;
-                        }
-                        else if (paramIndex == 1)
-                        {
-                            startDate = arg;
-                        }
-                        else if (paramIndex == 2)
-                        {
-                            endDate = arg;
-                        }
-                        else
-                        {
-                            Console.WriteLine("**Syntax Error - Unknown value");
-                            return false;
-                        }
-                        paramIndex++;
-                        break;
+                    arg = argStack.Pop();
+                    switch (arg.ToUpper())
+                    {
+                        case "/ST":
+                            startTime = argStack.Pop();
+                            break;
+                        case "/ET":
+                            endTime = argStack.Pop();
+                            break;
+                        case "/F":
+                            Filename = argStack.Pop();
+                            break;
+                        case "/P":
+                            pages = argStack.Pop();
+                            break;
+                        case "/V":
+                            Verbose = true;
+                            break;
+                        case "-ST":
+                            startTime = argStack.Pop();
+                            break;
+                        case "-ET":
+                            endTime = argStack.Pop();
+                            break;
+                        case "-F":
+                            Filename = argStack.Pop();
+                            break;
+                        case "-P":
+                            pages = argStack.Pop();
+                            break;
+                        case "-V":
+                            Verbose = true;
+                            break;
+                        default:
+                            // Assumes any args that do not have a slash/dash identifier
+                            // are (in order) Url, startDate, and endDate. Any other
+                            // string is unknown and will result in an error.
+                            if (paramIndex == 0)
+                            {
+                                Url = arg;
+                            }
+                            else if (paramIndex == 1)
+                            {
+                                startDate = arg;
+                            }
+                            else if (paramIndex == 2)
+                            {
+                                endDate = arg;
+                            }
+                            else
+                            {
+                                Console.WriteLine("**Syntax Error - Unknown value");
+                                return false;
+                            }
+
+                            paramIndex++;
+                            break;
+                    }
                 }
+            }
+            catch
+            {
+                Console.WriteLine($"**Syntax Error - Bad argument value for {arg}");
+                return false;
             }
 
             // URL
@@ -141,10 +152,14 @@ namespace TBR
             try
             {
                 PageSize = Convert.ToInt32(pages);
+                if (PageSize < 0)
+                {
+                    throw new Exception();
+                }
             }
             catch
             {
-                Console.WriteLine("**Syntax Error - Pages must be a valid number");
+                Console.WriteLine("**Syntax Error - Pages must be a valid positive number");
                 return false;
             }
 

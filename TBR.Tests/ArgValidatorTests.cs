@@ -171,7 +171,7 @@ namespace Tests
         }
 
         [Test]
-        public void InvalidDateTimeMsgForBadendTimeArg()
+        public void InvalidDateTimeMsgForBadEndTimeArg()
         {
             // Arrange
             using (StringWriter sw = new StringWriter())
@@ -208,6 +208,72 @@ namespace Tests
                 Assert.Multiple(() =>
                 {
                     Assert.That(sw.ToString().Equals(expectedMsg));
+                    Assert.That(expectedResult.Equals(false));
+                });
+            }
+        }
+
+        // Page argument tests
+        [Test]
+        public void PagesMustBeAPositiveNumber()
+        {
+            // Arrange
+            using (StringWriter sw = new StringWriter())
+            {
+                Console.SetOut(sw);
+                string[] args = new string[] { "Url", "1/1/2017", "2/1/2017", "/P","badValue" };
+                string expectedMsg = "**Syntax Error - Pages must be a valid positive number" + Environment.NewLine;
+
+                // Act
+                bool? expectedResult = sut.Validate(args);
+
+                Assert.Multiple(() =>
+                {
+                    Assert.That(sw.ToString().Equals(expectedMsg));
+                    Assert.That(expectedResult.Equals(false));
+                });
+            }
+        }
+
+        [Test]
+        public void PagesArgCannotBeEmptyString()
+        {
+            // Arrange
+            using (StringWriter sw = new StringWriter())
+            {
+                Console.SetOut(sw);
+                string[] args = new string[] { "Url", "1/1/2017", "2/1/2017", "/P","" };
+                string expectedMsg = "**Syntax Error - Pages must be a valid positive number" + Environment.NewLine;
+
+                // Act
+                bool? expectedResult = sut.Validate(args);
+
+                Assert.Multiple(() =>
+                {
+                    Assert.That(sw.ToString().Equals(expectedMsg));
+                    Assert.That(expectedResult.Equals(false));
+                });
+            }
+        }
+
+        // Missing arg values tests
+        [Test]
+        public void PagesArgCannotBeBlank()
+        {
+            // Only occurs if the last arg in the list is blank.
+            // Arrange
+            using (StringWriter sw = new StringWriter())
+            {
+                Console.SetOut(sw);
+                string[] args = new string[] { "Url", "1/1/2017", "2/1/2017", "/P" };
+                string expectedMsg = "**Syntax Error - Bad argument value for";
+
+                // Act
+                bool? expectedResult = sut.Validate(args);
+
+                Assert.Multiple(() =>
+                {
+                    Assert.That(sw.ToString().StartsWith(expectedMsg));
                     Assert.That(expectedResult.Equals(false));
                 });
             }
