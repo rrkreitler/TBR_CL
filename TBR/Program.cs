@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace TBR
 {
@@ -6,9 +7,27 @@ namespace TBR
     {
         static void Main(string[] args)
         {
-            ShowHelp();
+            Console.WriteLine();
+            ArgValidator argValidator = new ArgValidator();
+            bool? validatedArgs = argValidator.Validate(args);
+            if (validatedArgs != true)
+            {
+                if (validatedArgs == false) { ShowHelp(); }
+                Environment.Exit(0);
+            }
 
-            Console.Write("Hit any key...");
+            TweetDataClient tdc = new TweetDataClient();
+            var results = tdc.GetItemsFromUrl(argValidator.Url, argValidator.StartDate, argValidator.EndDate, argValidator.Verbose);
+            Console.WriteLine("\n======================================");
+            Console.WriteLine($"Query from: {argValidator.StartDate} to {argValidator.EndDate}");
+            Console.WriteLine($"Records Found: {results.Count()}");
+            Console.WriteLine("======================================");
+            foreach (var result in results)
+            {
+                Console.WriteLine($"{result.Id}   {result.Stamp}\n{result.Text}");
+            }
+
+            Console.Write("\nHit any key...");
             Console.ReadKey();
         }
 
