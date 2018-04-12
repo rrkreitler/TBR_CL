@@ -84,6 +84,133 @@ namespace Tests
             }
         }
 
-        
+        // Test for Url arg.
+        [Test]
+        public void InvalidUrlForBadUrlArg()
+        {
+            // Arrange
+            using (StringWriter sw = new StringWriter())
+            {
+                Console.SetOut(sw);
+                string[] args = new string[] {"", "startDate", "endDate" };
+                string expectedMsg = "**Syntax Error - Invalid URL" + Environment.NewLine;
+
+                // Act
+                bool? expectedResult = sut.Validate(args);
+
+                Assert.Multiple(() =>
+                {
+                    Assert.That(sw.ToString().Equals(expectedMsg));
+                    Assert.That(expectedResult.Equals(false));
+                });
+            }
+        }
+
+        // Start and end date tests
+        [Test]
+        public void InvalidDateTimeMsgForBadStartDateArg()
+        {
+            // Arrange
+            using (StringWriter sw = new StringWriter())
+            {
+                Console.SetOut(sw);
+                string[] args = new string[] { "Url", "badDateString", "endDate" };
+                string expectedMsg = "**Syntax Error - Invalid start/end date or time" + Environment.NewLine;
+
+                // Act
+                bool? expectedResult = sut.Validate(args);
+
+                Assert.Multiple(() =>
+                {
+                    Assert.That(sw.ToString().Equals(expectedMsg));
+                    Assert.That(expectedResult.Equals(false));
+                });
+            }
+        }
+
+        [Test]
+        public void InvalidDateTimeMsgForBadStartTimeArg()
+        {
+            // Arrange
+            using (StringWriter sw = new StringWriter())
+            {
+                Console.SetOut(sw);
+                string[] args = new string[] { "Url", "1/1/2017", "/ST", "badTimeString", "2/1/2017" };
+                string expectedMsg = "**Syntax Error - Invalid start/end date or time" + Environment.NewLine;
+
+                // Act
+                bool? expectedResult = sut.Validate(args);
+
+                Assert.Multiple(() =>
+                {
+                    Assert.That(sw.ToString().Equals(expectedMsg));
+                    Assert.That(expectedResult.Equals(false));
+                });
+            }
+        }
+
+        [Test]
+        public void InvalidDateTimeMsgForBadEndDateArg()
+        {
+            // Arrange
+            using (StringWriter sw = new StringWriter())
+            {
+                Console.SetOut(sw);
+                string[] args = new string[] { "Url", "1/1/2017", "badEndDateString" };
+                string expectedMsg = "**Syntax Error - Invalid start/end date or time" + Environment.NewLine;
+
+                // Act
+                bool? expectedResult = sut.Validate(args);
+
+                Assert.Multiple(() =>
+                {
+                    Assert.That(sw.ToString().Equals(expectedMsg));
+                    Assert.That(expectedResult.Equals(false));
+                });
+            }
+        }
+
+        [Test]
+        public void InvalidDateTimeMsgForBadendTimeArg()
+        {
+            // Arrange
+            using (StringWriter sw = new StringWriter())
+            {
+                Console.SetOut(sw);
+                string[] args = new string[] { "Url", "1/1/2017", "/ET", "badTimeString", "2/1/2017" };
+                string expectedMsg = "**Syntax Error - Invalid start/end date or time" + Environment.NewLine;
+
+                // Act
+                bool? expectedResult = sut.Validate(args);
+
+                Assert.Multiple(() =>
+                {
+                    Assert.That(sw.ToString().Equals(expectedMsg));
+                    Assert.That(expectedResult.Equals(false));
+                });
+            }
+        }
+
+        // Unknown args
+        [Test]
+        public void UnknownValueForTooManyArgsWithoutSwithces()
+        {
+            // Arrange
+            using (StringWriter sw = new StringWriter())
+            {
+                Console.SetOut(sw);
+                string[] args = new string[] { "Url", "1/1/2017", "badString", "2/1/2017" };
+                string expectedMsg = "**Syntax Error - Unknown value" + Environment.NewLine;
+
+                // Act
+                bool? expectedResult = sut.Validate(args);
+
+                Assert.Multiple(() =>
+                {
+                    Assert.That(sw.ToString().Equals(expectedMsg));
+                    Assert.That(expectedResult.Equals(false));
+                });
+            }
+        }
     }
 }
