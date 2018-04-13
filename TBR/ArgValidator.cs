@@ -16,6 +16,7 @@ namespace TBR
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public bool Verbose { get; set; }
+        public bool NoList { get; set; }
         public string Filename { get; set; }
         public int PageSize { get; set; }
 
@@ -49,6 +50,7 @@ namespace TBR
             string endTime = "12:00 AM";
             string pages = "0";
             Verbose = false;
+            NoList = false;
             Filename = string.Empty;
 
             // Parse arguments on slashes or dashes
@@ -77,6 +79,9 @@ namespace TBR
                         case "/V":
                             Verbose = true;
                             break;
+                        case "/NL":
+                            NoList = true;
+                            break;
                         case "-ST":
                             startTime = argStack.Pop();
                             break;
@@ -91,6 +96,9 @@ namespace TBR
                             break;
                         case "-V":
                             Verbose = true;
+                            break;
+                        case "-NL":
+                            NoList = true;
                             break;
                         default:
                             // Assumes any args that do not have a slash/dash identifier
@@ -168,7 +176,7 @@ namespace TBR
             {
                 if (File.Exists(Filename))
                 {
-                    Console.WriteLine($"The file {Filename} already exists.");
+                    Console.WriteLine($"\nThe file {Filename} already exists.");
                     Console.Write($"Do you want to overwrite it? (Y/N): ");
                     if (Console.ReadKey().Key != ConsoleKey.Y)
                     {

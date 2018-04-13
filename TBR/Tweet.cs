@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
+using Newtonsoft.Json;
 
 namespace TBR
 {
@@ -13,6 +14,7 @@ namespace TBR
 
         // Converts the date string to a typed date.
         // If the date string is invalid it returns a default (min date value).
+        [JsonIgnore]
         public DateTime Date
         {
             get

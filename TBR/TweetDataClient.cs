@@ -27,6 +27,7 @@ namespace TBR
         public IEnumerable<Tweet> GetItemsFromUrl(string url, DateTime startDate, DateTime endDate, bool verbose)
         {
             _verbose = verbose;
+            Console.WriteLine("\n\nWaiting on query...\n");
             IEnumerable<Tweet> tweets = RunAsync(url, startDate, endDate).GetAwaiter().GetResult();
             return tweets;
         }
