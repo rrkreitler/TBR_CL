@@ -3,9 +3,11 @@ This is a command line version of the TBR message browser found in the [TBR repo
 
 This version will query the web API, allow the user to page through the list of results, and save the results to a local json file. 
 
-It uses the following command line syntax:
+An exe built for Windows 10 x64 can be found in the Win10x64 folder.
 
-TBR url startdate [/ST starttime] enddate [/ET endtime] [/F [drive:][path]filename] [/NL] [/P pages] [/V]
+### Syntax
+
+**TBR url startdate** [/ST starttime] **enddate** [/ET endtime] [/F [drive:][path]filename] [/NL] [/P pages] [/V]
 
 **url** - Url of the message archive.
 
