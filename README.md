@@ -1,5 +1,5 @@
 # TBR_CL
-Command Line version of the TBR message browser found in the [TBR repository](https://github.com/rrkreitler/TBR).
+This is a command line version of the TBR message browser found in the [TBR repository](https://github.com/rrkreitler/TBR).
 
 This version will query the web API, allow the user to page through the list of results, and save the results to a local json file. 
 
