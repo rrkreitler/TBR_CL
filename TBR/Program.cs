@@ -10,15 +10,17 @@ namespace TBR
 
         static void Main(string[] args)
         {
-            Console.WriteLine();
+            // Parse and validate command line args.
             ArgValidator argValidator = new ArgValidator();
             bool? validatedArgs = argValidator.Validate(args);
             if (validatedArgs != true)
             {
+                // If parse errors display syntax help.
                 if (validatedArgs == false) { ShowHelp(); }
                 Environment.Exit(0);
             }
 
+            // Query the remote site.
             TweetDataClient tdc = new TweetDataClient();
             IEnumerable<Tweet> queryResult = null;
             try
@@ -113,7 +115,7 @@ namespace TBR
                     for (int i = startIndex; i < endIndex && i < results.Count() && updateScreen; i++)
                     {
                         Console.WriteLine($"{results[i].Id}   {results[i].Stamp}\n{results[i].Text}");
-                        Console.WriteLine("-----------------------------------------");
+                        Console.WriteLine("------------------------------------------------------------");
                     }
 
                     if (argValidator.PageSize != 0)
@@ -135,14 +137,17 @@ namespace TBR
                 } while (key != PageKey.Quit);
             }
 
-            int recsFound = queryResult?.Count() ?? 0;
-            
-            Console.WriteLine("\n=========================================");
-            Console.WriteLine($"Query from: {argValidator.StartDate} to {argValidator.EndDate}");
-            Console.WriteLine($"Records Found: {recsFound}");
-            Console.WriteLine("=========================================");
+            if (argValidator.PageSize == 0)
+            {
+                int recsFound = queryResult?.Count() ?? 0;
+                Console.WriteLine("\n============================================================");
+                Console.WriteLine($"Query from: {argValidator.StartDate} to {argValidator.EndDate}");
+                Console.WriteLine($"Records Found: {recsFound}");
+                Console.WriteLine("============================================================");
+            }
         }
 
+        // Processes key strokes during pagination.
         private static PageKey CheckKey(ConsoleKeyInfo keyInfo)
         {
             Console.Write("\b \b");
