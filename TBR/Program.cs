@@ -266,10 +266,10 @@ namespace TBR
             Console.WriteLine("url         Url of the message archive.");
             Console.WriteLine("startdate   Start date for the range of messages in the archive.");
             Console.WriteLine("/ST         Start time for the range of messages in the archive.");
-            Console.WriteLine("starttime   Timestamp value in the form HH:MM AM/PM");
+            Console.WriteLine("starttime   Timestamp value in the form \"4:35 AM\"");
             Console.WriteLine("enddate     End date for the range of messages in the archive.");
             Console.WriteLine("/ET         End time for the range of messages in the archive.");
-            Console.WriteLine("endtime     Timestamp value in the form HH:MM AM/PM");
+            Console.WriteLine("endtime     Timestamp value in the form \"4:35 AM\"");
             Console.WriteLine("/F          Downloads and saves messages.");
             Console.WriteLine("[dirve:][path]filename");
             Console.WriteLine("            Specifies drive, directory, and name of file where");
