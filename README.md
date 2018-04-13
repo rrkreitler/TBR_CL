@@ -25,7 +25,7 @@ An exe built for Windows 10 x64 can be found in the Win10x64 folder.
 
 **/F** - Downloads and saves messages.
 
-**[dirve:][path]filename**
+**[drive:][path]filename**
             - Specifies drive, directory, and name of file where downloaded messages will be saved.
             
 **/NL** - No List. Messages will not be displayed. Only the summary will be shown. NOTE: This overrides /P
