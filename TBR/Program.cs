@@ -271,7 +271,7 @@ namespace TBR
             Console.WriteLine("/ET         End time for the range of messages in the archive.");
             Console.WriteLine("endtime     Timestamp value in the form \"4:35 AM\"");
             Console.WriteLine("/F          Downloads and saves messages.");
-            Console.WriteLine("[dirve:][path]filename");
+            Console.WriteLine("[drive:][path]filename");
             Console.WriteLine("            Specifies drive, directory, and name of file where");
             Console.WriteLine("            downloaded messages will be saved.");
             Console.WriteLine("/NL         No List. Messages will not be displayed. Only the summary");
