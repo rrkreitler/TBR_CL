@@ -30,7 +30,7 @@ namespace TBR
             {
                 Console.WriteLine("\n**Query Error - Cannot query the remote host\n");
             }
-            
+
             if (queryResult != null && queryResult.Count() > 0)
             {
                 List<Tweet> results = queryResult.ToList();
@@ -42,6 +42,8 @@ namespace TBR
                 PageKey key = PageKey.Home;
                 do
                 {
+                    string keyNext = " next - >";
+                    string keyPrvious = "< - previous ";
                     bool updateScreen = false;
                     switch (key)
                     {
@@ -54,8 +56,10 @@ namespace TBR
                                 {
                                     startIndex = 0;
                                 }
+                                keyNext = "";
                                 updateScreen = true;
                             }
+
                             break;
                         case PageKey.Next:
                             if (endIndex != results.Count)
@@ -64,9 +68,14 @@ namespace TBR
                                 {
                                     startIndex += argValidator.PageSize;
                                     endIndex += argValidator.PageSize;
+                                    if (endIndex > results.Count)
+                                    {
+                                        keyNext = "";
+                                    }
                                     updateScreen = true;
                                 }
                             }
+
                             break;
                         case PageKey.Home:
                             if (startIndex != 0)
@@ -76,18 +85,27 @@ namespace TBR
                                 endIndex = startIndex +
                                            ((argValidator.PageSize == 0) ? results.Count : argValidator.PageSize);
                                 updateScreen = true;
+                                keyPrvious = "";
                             }
+
                             break;
                         case PageKey.Previous:
                             if (startIndex != 0)
                             {
                                 startIndex -= argValidator.PageSize;
-                                if (startIndex < 0) startIndex = 0;
+                                if (startIndex <= 0)
+                                {
+                                    startIndex = 0;
+                                    keyPrvious = "";
+                                }
                                 endIndex = startIndex + argValidator.PageSize;
                                 updateScreen = true;
                             }
                             break;
                         default:
+
+                            Console.WriteLine("*** Valid keys:");
+                            Console.WriteLine("N-next P-previous HOME-begin END-end Q-quit\n");
                             updateScreen = false;
                             break;
                     }
@@ -95,17 +113,19 @@ namespace TBR
                     for (int i = startIndex; i < endIndex && i < results.Count() && updateScreen; i++)
                     {
                         Console.WriteLine($"{results[i].Id}   {results[i].Stamp}\n{results[i].Text}");
-                        Console.WriteLine("-------------------------------------------------------------------------");
+                        Console.WriteLine("-----------------------------------------");
                     }
 
                     if (argValidator.PageSize != 0)
                     {
                         if (updateScreen)
                         {
+                            Console.WriteLine($"\nQuery from: {argValidator.StartDate} to {argValidator.EndDate}");
                             int endNum = (endIndex > results.Count) ? results.Count : endIndex;
                             Console.WriteLine(
-                            $"\nRecords {startIndex + 1} - {endNum} of {results.Count}  < - previous  next - >\n");
+                                $"Records {startIndex + 1} - {endNum} of {results.Count}   {keyPrvious}{keyNext}\n");
                         }
+
                         key = CheckKey(Console.ReadKey());
                     }
                     else
@@ -113,23 +133,19 @@ namespace TBR
                         key = PageKey.Quit;
                     }
                 } while (key != PageKey.Quit);
-                Console.WriteLine("\n======================================");
-                Console.WriteLine($"Query from: {argValidator.StartDate} to {argValidator.EndDate}");
-                Console.WriteLine($"Records Found: {queryResult.Count()}");
-                Console.WriteLine("======================================");
             }
-            else
-            {
-                Console.WriteLine("\n======================================");
-                Console.WriteLine($"Query from: {argValidator.StartDate} to {argValidator.EndDate}");
-                Console.WriteLine($"Records Found: 0");
-                Console.WriteLine("======================================");
-            }
+
+            int recsFound = queryResult?.Count() ?? 0;
+            
+            Console.WriteLine("\n=========================================");
+            Console.WriteLine($"Query from: {argValidator.StartDate} to {argValidator.EndDate}");
+            Console.WriteLine($"Records Found: {recsFound}");
+            Console.WriteLine("=========================================");
         }
 
         private static PageKey CheckKey(ConsoleKeyInfo keyInfo)
         {
-            Console.Write('\b');
+            Console.Write("\b \b");
             switch (keyInfo.Key)
             {
                 // Valid "Next Page" keys
@@ -170,7 +186,6 @@ namespace TBR
                 case ConsoleKey.Q:
                     return PageKey.Quit;
                 default:
-                    Console.Write("\b \b");
                     break;
             }
             return PageKey.None;
