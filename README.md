@@ -13,13 +13,13 @@ TBR url startdate [/ST starttime] enddate [/ET endtime] [/F [drive:][path]filena
 
 **/ST** - Start time for the range of messages in the archive.
 
-**starttime** - Timestamp value in the form "HH:MM AM/PM"
+**starttime** - Timestamp value in the form "4:35 PM"
 
 **enddate** - End date for the range of messages in the archive.
 
 **/ET** - End time for the range of messages in the archive.
 
-**endtime** - Timestamp value in the form "HH:MM AM/PM"
+**endtime** - Timestamp value in the form "4:35 PM"
 
 **/F** - Downloads and saves messages.
 
